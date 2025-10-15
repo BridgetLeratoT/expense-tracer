@@ -1,0 +1,83 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+class Expense {
+    String category;
+    double amount;
+    String date;
+
+    public Expense(String category, double amount, String date) {
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+    }
+}
+
+public class ExpenseTracker extends JFrame {
+
+    private JTextField tfAmount, tfDate;
+    private JComboBox cbCategory;
+    private JTable expenseTable;
+    private DefaultTableModel tableModel;
+    private ArrayList expenseList = new ArrayList();
+    private JLabel lblTotal;
+
+    public ExpenseTracker() {
+        setTitle("Expense Tracker");
+        setSize(700, 500);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
+        // Top Label
+        JLabel heading = new JLabel("Personal Expense Tracker", JLabel.CENTER);
+        heading.setFont(new Font("SansSerif", Font.BOLD, 22));
+        heading.setForeground(new Color(0, 102, 153));
+        heading.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(heading, BorderLayout.NORTH);
+
+        // Input Panel
+        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
+        inputPanel.setBackground(new Color(230, 245, 255));
+
+        cbCategory = new JComboBox(new String[]{"Food", "Transport", "Bills", "Shopping", "Others"});
+        tfAmount = new JTextField();
+        tfDate = new JTextField(LocalDate.now().toString());
+
+        JButton btnAdd = new JButton("Add Expense");
+        JButton btnDelete = new JButton("Delete Selected");
+
+        inputPanel.add(new JLabel("Category:"));
+        inputPanel.add(cbCategory);
+        inputPanel.add(new JLabel("Amount:"));
+        inputPanel.add(tfAmount);
+        inputPanel.add(new JLabel("Date (YYYY-MM-DD):"));
+        inputPanel.add(tfDate);
+        inputPanel.add(btnAdd);
+        inputPanel.add(btnDelete);
+
+        add(inputPanel, BorderLayout.WEST);
+
+        // Table Panel
+        tableModel = new DefaultTableModel(new String[]{"Category", "Amount", "Date"}, 0);
+        expenseTable = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(expenseTable);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Bottom Panel
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        lblTotal = new JLabel("Total: ₹0.0");
+        lblTotal.setFont(new Font("SansSerif", Font.BOLD, 16));
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
+        bottomPanel.add(lblTotal);
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        // Event Listeners
+        btnAdd.addActionListener(e -&gt; addExpense());
+        btnDelete.addActionListener(e -&gt; deleteSelected());
+    }
