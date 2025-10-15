@@ -81,3 +81,47 @@ public class ExpenseTracker extends JFrame {
         btnAdd.addActionListener(e -&gt; addExpense());
         btnDelete.addActionListener(e -&gt; deleteSelected());
     }
+
+    private void addExpense() {
+        String category = cbCategory.getSelectedItem().toString();
+        String date = tfDate.getText().trim();
+        double amount;
+
+        try {
+            amount = Double.parseDouble(tfAmount.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid amount!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Expense exp = new Expense(category, amount, date);
+        expenseList.add(exp);
+        tableModel.addRow(new Object[]{category, "₹" + amount, date});
+        tfAmount.setText("");
+        updateTotal();
+    }
+
+    private void deleteSelected() {
+        int selected = expenseTable.getSelectedRow();
+        if (selected == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to delete.");
+            return;
+        }
+        expenseList.remove(selected);
+        tableModel.removeRow(selected);
+        updateTotal();
+    }
+
+    private void updateTotal() {
+        double total = 0;
+        for (Expense e : expenseList) {
+            total += e.amount;
+        }
+        lblTotal.setText("Total: ₹" + total);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -&gt; new ExpenseTracker().setVisible(true));
+    }
+}
+
