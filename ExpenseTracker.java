@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -20,10 +19,10 @@ class Expense {
 public class ExpenseTracker extends JFrame {
 
     private JTextField tfAmount, tfDate;
-    private JComboBox cbCategory;
+    private JComboBox<String> cbCategory;
     private JTable expenseTable;
     private DefaultTableModel tableModel;
-    private ArrayList expenseList = new ArrayList();
+    private ArrayList<Expense> expenseList = new ArrayList<>();
     private JLabel lblTotal;
 
     public ExpenseTracker() {
@@ -45,7 +44,7 @@ public class ExpenseTracker extends JFrame {
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
         inputPanel.setBackground(new Color(230, 245, 255));
 
-        cbCategory = new JComboBox(new String[]{"Food", "Transport", "Bills", "Shopping", "Others"});
+        cbCategory = new JComboBox<>(new String[]{"Food", "Transport", "Bills", "Shopping", "Others"});
         tfAmount = new JTextField();
         tfDate = new JTextField(LocalDate.now().toString());
 
@@ -78,8 +77,8 @@ public class ExpenseTracker extends JFrame {
         add(bottomPanel, BorderLayout.SOUTH);
 
         // Event Listeners
-        btnAdd.addActionListener(e -&gt; addExpense());
-        btnDelete.addActionListener(e -&gt; deleteSelected());
+        btnAdd.addActionListener(e -> addExpense());
+        btnDelete.addActionListener(e -> deleteSelected());
     }
 
     private void addExpense() {
@@ -121,7 +120,6 @@ public class ExpenseTracker extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -&gt; new ExpenseTracker().setVisible(true));
+        SwingUtilities.invokeLater(() -> new ExpenseTracker().setVisible(true));
     }
 }
-
