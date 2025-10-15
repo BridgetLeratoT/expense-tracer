@@ -70,7 +70,7 @@ public class ExpenseTracker extends JFrame {
 
         // Bottom Panel
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        lblTotal = new JLabel("Total: ₹0.0");
+        lblTotal = new JLabel("Total: R0.00");
         lblTotal.setFont(new Font("SansSerif", Font.BOLD, 16));
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
         bottomPanel.add(lblTotal);
@@ -95,7 +95,7 @@ public class ExpenseTracker extends JFrame {
 
         Expense exp = new Expense(category, amount, date);
         expenseList.add(exp);
-        tableModel.addRow(new Object[]{category, "₹" + amount, date});
+        tableModel.addRow(new Object[]{category, String.format("R%.2f", amount), date});
         tfAmount.setText("");
         updateTotal();
     }
@@ -116,7 +116,7 @@ public class ExpenseTracker extends JFrame {
         for (Expense e : expenseList) {
             total += e.amount;
         }
-        lblTotal.setText("Total: ₹" + total);
+        lblTotal.setText("Total: " + String.format("R%.2f", total));
     }
 
     public static void main(String[] args) {
